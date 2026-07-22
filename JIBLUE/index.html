@@ -1058,7 +1058,7 @@ header::before{
     <div class="prog-card">
       <div class="prog-top">
         <div>
-          <div class="prog-label">初週売上 🎯 ウィークリー目標 30万枚！</div>
+          <div class="prog-label">初週売上 🏆 シングルセールス首位獲得！</div>
           <div class="prog-nums" id="sales-display">?<small>枚</small></div>
         </div>
       </div>
@@ -1069,7 +1069,7 @@ header::before{
         <div class="ms now"   id="ms-10"><div class="ms-dot"></div>🎯 まずは目標10万枚！</div>
         <div class="ms later" id="ms-20"><div class="ms-dot"></div>20万枚</div>
         <div class="ms later" id="ms-30"><div class="ms-dot"></div>30万枚</div>
-        <div class="ms later" id="ms-ex"><div class="ms-dot"></div>？？？</div>
+        <div class="ms later" id="ms-ex"><div class="ms-dot"></div>🏆 シングルセールス首位</div>
       </div>
     </div>
 
@@ -1077,9 +1077,9 @@ header::before{
       <div class="sched-title">⚽ 初動1週間 集中スケジュール</div>
       <div class="tl">
         <div class="tl-item done"><div class="tl-dot"></div><div class="tl-date">6/2 (火)</div><div class="tl-info"><strong>フラゲ日 💿</strong>初日売上の大半がここで決まります！</div></div>
-        <div class="tl-item now"><div class="tl-dot"></div><div class="tl-date">6/3 (水)</div><div class="tl-info"><strong>発売日 🎉</strong>オリコンデイリーランキング初日発表！引き続き在庫確保へ！</div></div>
-        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">6/5 (金)</div><div class="tl-info"><strong>土日前の在庫補充確認</strong>週末に向けて各店舗の在庫状況が変動しやすいタイミングです。</div></div>
-        <div class="tl-item warn"><div class="tl-dot"></div><div class="tl-date">6/8 (日)</div><div class="tl-info"><strong>初動集計 最終日！⚠️</strong>ビルボード・オリコン共に初週売上のカウント最終日です。<span class="alert">※店舗レジ・受取は17:00までが確実です！</span></div></div>
+        <div class="tl-item done"><div class="tl-dot"></div><div class="tl-date">6/3 (水)</div><div class="tl-info"><strong>発売日 🎉</strong>オリコンデイリーランキング初日発表！引き続き在庫確保へ！</div></div>
+        <div class="tl-item done"><div class="tl-dot"></div><div class="tl-date">6/5 (金)</div><div class="tl-info"><strong>土日前の在庫補充確認</strong>週末に向けて各店舗の在庫状況が変動しやすいタイミングです。</div></div>
+        <div class="tl-item done warn"><div class="tl-dot"></div><div class="tl-date">6/7 (日)</div><div class="tl-info"><strong>初動集計 最終日！⚠️</strong>ビルボード・オリコン共に初週売上のカウント最終日です。<span class="alert">※店舗レジ・受取は17:00までが確実です！</span></div></div>
       </div>
     </div>
     <div class="recent-card">
@@ -1226,6 +1226,9 @@ header::before{
 
 <div class="toast" id="toast"><span class="t-ic" id="t-ic">✦</span><span id="t-msg"></span></div>
 
+<!-- 首位獲得セレブレーション用 confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp }                        from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
@@ -1247,7 +1250,7 @@ const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
 // ── 売上定数 ─────────────────────────
-const CURRENT_SALES = 340072;
+const CURRENT_SALES = 384166;
 
 const VERS = [
   { key:'v1', label:'歓声 VER.',       short:'歓声' },
@@ -2880,6 +2883,21 @@ function updateMeter(sales){
   });
 }
 updateMeter(CURRENT_SALES);
+
+// ── 首位獲得セレブレーション（ページ表示時に自動再生）──
+(function celebrateRanking(){
+  if(typeof confetti !== 'function') return;
+  const fire = (ratio, opts) => confetti(Object.assign({
+    particleCount: Math.floor(150 * ratio),
+    origin: { y: 0.6 },
+    colors: ['#1B5EBF','#4A9AF0','#D4A832','#F0C84A','#FFFFFF']
+  }, opts));
+  setTimeout(() => {
+    fire(0.4, { spread: 60, startVelocity: 55 });
+    fire(0.3, { spread: 100, decay: 0.91 });
+    fire(0.3, { spread: 130, startVelocity: 35, decay: 0.92, scalar: 0.8 });
+  }, 600);
+})();
 
 // ── 状態管理 ─────────────────────────
 const storeStates = {};
